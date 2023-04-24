@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import AppBar from "./appbar";
 import Footer from "./footer";
 import { SessionProvider } from "next-auth/react"
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App({
   Component,
@@ -16,6 +17,7 @@ export default function App({
         <AppBar />
         <div style={{ paddingTop: '64px' }}>
           <Component {...restPageProps} />
+          <Analytics />
         </div>
       </div>
       <Footer />
