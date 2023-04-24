@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react"
 import useSpotify from "../../hooks/useSpotify"
-import Login from "./login";
 
 interface Profile {
     id: string;
