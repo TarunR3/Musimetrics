@@ -39,6 +39,8 @@ export default function TopGenres() {
                 const response = await spotifyApi.getMyTopArtists({ time_range: timeframe, limit: 50 });
                 const topArtists = response.body.items;
                 const genreCount: GenreCount = {};
+                const l = topArtists.length;
+                console.log(l);
                 for (const artist of topArtists) {
                     for (const genre of artist.genres) {
                         if (genre in genreCount) {
@@ -51,7 +53,7 @@ export default function TopGenres() {
                 console.log(genreCount)
                 const genrePercentage: GenrePercentage = {};
                 for (const [genre, count] of Object.entries(genreCount)) {
-                    genrePercentage[genre] = (count / topArtists.length) * 200;
+                    genrePercentage[genre] = (count / topArtists.length);
                 }
                 const sortedGenrePercentage = Object.fromEntries(
                     Object.entries(genrePercentage).sort((a, b) => b[1] - a[1])
@@ -98,7 +100,7 @@ export default function TopGenres() {
                     .map(([genre, percentage], index) => (
                         <div key={genre} className="flex flex-col items-start w-full px-4 py-2">
                             <h1 className="text-white">{index + 1}. {genre.charAt(0).toUpperCase() + genre.slice(1)}</h1>
-                            <Bar value={percentage / 100} />
+                            <Bar value={percentage} />
                         </div>
                     ))}
             </div>
