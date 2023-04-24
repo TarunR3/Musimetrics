@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/login.js", "src/pages/PieChart.js", "hooks/useSpotify.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/login.tsx", "src/pages/PieChart.js", "hooks/useSpotify.js"],
   "exclude": ["node_modules"]
 }

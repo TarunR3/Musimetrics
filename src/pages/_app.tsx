@@ -13,12 +13,12 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <div className="h-full dark">
-      <AppBar/>
+        <AppBar />
         <div style={{ paddingTop: '64px' }}>
           <Component {...restPageProps} />
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </SessionProvider>
   )
 }
