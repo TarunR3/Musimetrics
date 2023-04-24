@@ -1,7 +1,7 @@
-import DecadeDonut from "./PieChart";
-import LengthBar from "./BarChart";
-import ListeningClock from "./PolarChart";
-import PopularityBubble from "./BubbleChart";
+import DecadeDonut from "../../lib/PieChart";
+import LengthBar from "../../lib/BarChart";
+import ListeningClock from "../../lib/PolarChart";
+import PopularityBubble from "../../lib/BubbleChart";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
 import useSpotify from "../../hooks/useSpotify"
@@ -35,7 +35,7 @@ interface Track {
   uri: string;
 }
 
-interface Recent{
+interface Recent {
   track: Track
 }
 
@@ -65,7 +65,7 @@ export default function Home() {
       try {
         const response = await spotifyApi.getMyTopTracks({ time_range: "long_term", limit: 50 });
         const recent = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
-        const artist = await spotifyApi.getMyTopArtists({time_range: "short_term", limit: 1 });
+        const artist = await spotifyApi.getMyTopArtists({ time_range: "short_term", limit: 1 });
         setuserTopArtist(artist.body.items[0])
         const topTracks = response.body.items;
         const recentTracks = recent.body.items;
@@ -75,13 +75,13 @@ export default function Home() {
         const recentCount: RecentCount = {};
         const uniqueCount: UniqueCount = {};
         var mult = 4;
-        for(const track of topTracks){
+        for (const track of topTracks) {
           const uq = 100 - track.popularity
-          if(uq in uniqueCount){
+          if (uq in uniqueCount) {
             uniqueCount[uq] += 1 * mult;
             mult -= .04;
           }
-          else{
+          else {
             uniqueCount[uq] = 1 * mult;
             mult -= .04
           }
@@ -91,7 +91,7 @@ export default function Home() {
             .sort((a, b) => b[1] - a[1])
         );
         setUserUniqueness(sortedUniqueness);
-        for(const track of recentTracks){
+        for (const track of recentTracks) {
           const uid = track.track.id
           if (uid in recentCount) {
             recentCount[uid].count += 1;
@@ -180,70 +180,70 @@ export default function Home() {
     <div className="min-h-screen bg-neutral-950">
       <h1 className="text-center font-bold text-4xl py-4 text-white">Your Stats</h1>
       <div className="container mx-auto py-4 bg-neutral-800 rounded-lg">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-4">
-          <div className="bg-neutral-900 rounded-lg p-4">
-            <h2 className="text-white border-b-2 pb-1 mb-4 font-bold text-lg">The Songs You're Into Now</h2>
-            {Object.entries(userTopRecent)
-              .slice(0, 5)
-              .map(([albumId, { recent, count }], index) => {
-            return (
-              <div
-                key={albumId}
-                className="bg-gray-100 dark:bg-neutral-900 py-4 flex flex-row items-center justify-start rounded-lg"
-              >
-                <h1 className = 'text-lg dark:text-white font-bold pr-2'>{index + 1}.</h1>
-                <img
-                  className = "mr-4"
-                  src={recent.album.images[0].url}
-                  alt={recent.name}
-                  width="64"
-                  height="64"
-                  />
-                <div>
-                <h1 className="text-base dark:text-white font-bold">{`${recent.name
-                  }`}</h1>
-                <p className="text-gray-600 dark:text-neutral-400">{recent.artists[0].name}</p>
-                </div>
-              </div>
-            );
-          })}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-4">
+            <div className="bg-neutral-900 rounded-lg p-4">
+              <h2 className="text-white border-b-2 pb-1 mb-4 font-bold text-lg">The Songs Your Into Now</h2>
+              {Object.entries(userTopRecent)
+                .slice(0, 5)
+                .map(([albumId, { recent, count }], index) => {
+                  return (
+                    <div
+                      key={albumId}
+                      className="bg-gray-100 dark:bg-neutral-900 py-4 flex flex-row items-center justify-start rounded-lg"
+                    >
+                      <h1 className='text-lg dark:text-white font-bold pr-2'>{index + 1}.</h1>
+                      <img
+                        className="mr-4"
+                        src={recent.album.images[0].url}
+                        alt={recent.name}
+                        width="64"
+                        height="64"
+                      />
+                      <div>
+                        <h1 className="text-base dark:text-white font-bold">{`${recent.name
+                          }`}</h1>
+                        <p className="text-gray-600 dark:text-neutral-400">{recent.artists[0].name}</p>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
             <div className="bg-neutral-900 rounded-lg p-4 justify">
               <h2 className="text-white border-b-2 pb-1 mb-3 font-bold text-lg">Your Top Artist</h2>
-          {userTopArtist && (
-            <>
-              <img src={userTopArtist.images[0].url} alt={userTopArtist.name} className="w-auto h-auto mb-4" />
-              <h1 className="text-lg dark:text-white font-bold mb-4 text-center">{userTopArtist.name}</h1>
-              </>
-          )}
-          </div>
-          <div className="bg-neutral-900 rounded-lg p-4">
-            <h2 className="text-white border-b-2 pb-1 font-bold text-lg">How Unique is Your Taste</h2>
-            <p className="text-white mb-8">You're Uniquness Score is <span className="font-bold">{avUq && avUq.toFixed()}</span></p>
-            {userTopDecades && <PopularityBubble data={userUniqueness} />}
-          </div>
-        </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <div className="bg-neutral-900 rounded-lg p-4">
-            <h2 className="text-white border-b-2 pb-1 font-bold text-lg">By The Decades</h2>
-            <p className="text-white mb-8">Your favorite decade of music is the <span className="font-bold">{largestValue && largestValue[0]}s</span></p>
-            {userTopDecades && <DecadeDonut data={userTopDecades} />}
-          </div>
+              {userTopArtist && (
+                <>
+                  <img src={userTopArtist.images[0].url} alt={userTopArtist.name} className="w-auto h-auto mb-4" />
+                  <h1 className="text-lg dark:text-white font-bold mb-4 text-center">{userTopArtist.name}</h1>
+                </>
+              )}
+            </div>
             <div className="bg-neutral-900 rounded-lg p-4">
-            <h2 className="text-white border-b-2 pb-1 font-bold text-lg">Your Ideal Song Length</h2>
-            <p className="text-white mb-8">Your favorite songs are <span className="font-bold">{largestTrack && largestTrack[0]}</span> minutes long</p>
-            {userTopMinutes && <LengthBar data={userTopMinutes} />}
+              <h2 className="text-white border-b-2 pb-1 font-bold text-lg">How Unique is Your Taste</h2>
+              <p className="text-white mb-8">Your Uniquness Score is <span className="font-bold">{avUq && avUq.toFixed()}</span></p>
+              {userTopDecades && <PopularityBubble data={userUniqueness} />}
+            </div>
           </div>
-          <div className="bg-neutral-900 rounded-lg p-4">
-            <h2 className="text-white border-b-2 pb-1 font-bold text-lg">Your Listening Clock</h2>
-            <p className="text-white mb-8">You love listening to music at <span className="font-bold">{largestHour && largestHour[0]}:00</span></p>
-            {userTopHours && <ListeningClock data={userTopHours} />}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="bg-neutral-900 rounded-lg p-4">
+              <h2 className="text-white border-b-2 pb-1 font-bold text-lg">By The Decades</h2>
+              <p className="text-white mb-8">Your favorite decade of music is the <span className="font-bold">{largestValue && largestValue[0]}s</span></p>
+              {userTopDecades && <DecadeDonut data={userTopDecades} />}
+            </div>
+            <div className="bg-neutral-900 rounded-lg p-4">
+              <h2 className="text-white border-b-2 pb-1 font-bold text-lg">Your Ideal Song Length</h2>
+              <p className="text-white mb-8">Your favorite songs are <span className="font-bold">{largestTrack && largestTrack[0]}</span> minutes long</p>
+              {userTopMinutes && <LengthBar data={userTopMinutes} />}
+            </div>
+            <div className="bg-neutral-900 rounded-lg p-4">
+              <h2 className="text-white border-b-2 pb-1 font-bold text-lg">Your Listening Clock</h2>
+              <p className="text-white mb-8">You love listening to music at <span className="font-bold">{largestHour && largestHour[0]}:00</span></p>
+              {userTopHours && <ListeningClock data={userTopHours} />}
+            </div>
           </div>
         </div>
       </div>
-      </div>
-      <div className = "text-neutral-950">
+      <div className="text-neutral-950">
         a
       </div>
     </div>
