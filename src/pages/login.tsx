@@ -1,6 +1,7 @@
+//@ts-nocheck
 import { getProviders, signIn } from "next-auth/react";
 
-function Login({ providers }) {
+export default function Login({ providers }) {
     return (
         <div className="bg-neutral-950 flex items-center justify-center min-h-screen">
             {providers &&
@@ -17,8 +18,6 @@ function Login({ providers }) {
         </div>
     );
 }
-
-export default Login;
 
 export async function getServerSideProps() {
     const providers = await getProviders();
