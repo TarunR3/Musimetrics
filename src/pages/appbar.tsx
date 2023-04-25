@@ -31,7 +31,7 @@ function AppBar() {
         <header className="bg-gray-800 text-white fixed w-full z-50 top-0">
             <nav className="bg-white border-gray-200 dark:bg-black">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <a href="https://spotimetrics.com/" className="flex items-center">
+                    <a href="https://musimetrics.com/" className="flex items-center">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Icon_Stats_active.svg" className="h-8 mr-3" alt="App Logo" />
                         <span className="self-center text-2xl font-semibold whitespace-nowrap text-black dark:text-white">Musimetrics</span>
                     </a>
