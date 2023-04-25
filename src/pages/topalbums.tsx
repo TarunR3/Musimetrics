@@ -53,7 +53,6 @@ export default function TopAlbums() {
           Object.entries(albumPercentage).sort((a, b) => b[1].percentage - a[1].percentage)
         );
         setUserTopAlbums(sortedAlbumPercentage);
-        console.log(sortedAlbumPercentage)
       } catch (error) {
         console.log("Error fetching top albums:", error);
       }

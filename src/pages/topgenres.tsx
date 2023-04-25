@@ -40,7 +40,6 @@ export default function TopGenres() {
                 const topArtists = response.body.items;
                 const genreCount: GenreCount = {};
                 const l = topArtists.length;
-                console.log(l);
                 for (const artist of topArtists) {
                     for (const genre of artist.genres) {
                         if (genre in genreCount) {
@@ -50,7 +49,6 @@ export default function TopGenres() {
                         }
                     }
                 }
-                console.log(genreCount)
                 const genrePercentage: GenrePercentage = {};
                 for (const [genre, count] of Object.entries(genreCount)) {
                     genrePercentage[genre] = (count / topArtists.length);

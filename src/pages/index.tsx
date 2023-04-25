@@ -65,7 +65,7 @@ export default function Home() {
       try {
         const response = await spotifyApi.getMyTopTracks({ time_range: "long_term", limit: 50 });
         const recent = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
-        const artist = await spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 1 });
+        const artist = await spotifyApi.getMyTopArtists({ time_range: "short_term", limit: 1 });
         setuserTopArtist(artist.body.items[0])
         const topTracks = response.body.items;
         const recentTracks = recent.body.items;
@@ -205,6 +205,21 @@ export default function Home() {
                           }`}</h1>
                         <p className="text-gray-600 dark:text-neutral-400">{recent.artists[0].name}</p>
                       </div>
+                      <a
+                        href={recent.uri}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm text-white hover:underline text-center ml-auto"
+                      >
+                        <img src="https://www.logo.wine/a/logo/Spotify/Spotify-Icon-Black-Logo.wine.svg" alt="Spotify Logo" width="40" height="40" className="dark:hidden" />
+                        <img
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
+                          alt="Spotify Logo"
+                          width="20"
+                          height="20"
+                          className="hidden dark:block"
+                        />
+                      </a>
                     </div>
                   );
                 })}
@@ -215,6 +230,21 @@ export default function Home() {
                 <>
                   <img src={userTopArtist.images[0].url} alt={userTopArtist.name} className="w-auto h-auto mb-4" />
                   <h1 className="text-lg dark:text-white font-bold mb-4 text-center">{userTopArtist.name}</h1>
+                  <a
+                  href={userTopArtist.uri}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-white hover:underline text-center flex justify-center"
+                >
+                  <img src="https://www.logo.wine/a/logo/Spotify/Spotify-Icon-Black-Logo.wine.svg" alt="Spotify Logo" width="40" height="40" className="dark:hidden" />
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
+                    alt="Spotify Logo"
+                    width="20"
+                    height="20"
+                    className="hidden dark:block"
+                  />
+                </a>
                 </>
               )}
             </div>

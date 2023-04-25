@@ -30,7 +30,6 @@ export default function TopArtists(): JSX.Element {
     if (spotifyApi.getAccessToken()) {
       spotifyApi.getMyTopArtists({ time_range: timeframe, limit: 50 }).then((response) => {
         const data = response.body;
-        console.log(data.items);
         setUserTopArtists(data.items);
       });
     }

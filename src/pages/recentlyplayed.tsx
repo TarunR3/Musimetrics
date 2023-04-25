@@ -69,14 +69,14 @@ export default function Recent() {
                                 href={trackResult.track.uri}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-sm text-white hover:underline text-center"
+                                className="text-sm text-white hover:underline text-center mr-1"
                             >
                                 <img src="https://www.logo.wine/a/logo/Spotify/Spotify-Icon-Black-Logo.wine.svg" alt="Spotify Logo" width="40" height="40" className="dark:hidden" />
                                 <img
                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
                                     alt="Spotify Logo"
-                                    width="20"
-                                    height="20"
+                                    width="25"
+                                    height="25"
                                     className="hidden dark:block"
                                 />
                             </a>
