@@ -1,4 +1,4 @@
-# Spotimetrics.
+# Musimetrics.
 A website to display your top Spotify artists, tracks and more. Made with Next.js, Typescript, NextAuth, and Tailwind CSS
 
 Visit at https://spotimetrics.com/
