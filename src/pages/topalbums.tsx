@@ -63,7 +63,7 @@ export default function TopAlbums() {
   }, [session, spotifyApi, timeframe]);
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-neutral-950 mb-[-4]">
       <h1 className="text-center font-bold text-4xl py-4 dark:text-white">Top Albums ({dictTimeframes[timeframe]})</h1>
       <div className="flex justify-center">
         <button
@@ -88,7 +88,8 @@ export default function TopAlbums() {
           All Time
         </button>
       </div>
-      <div className="container mx-auto py-4 my-4 px-8 bg-neutral-800 rounded-lg">
+      <div className = "py-4">
+      <div className="container mx-auto py-4 px-8 bg-neutral-800 rounded-lg">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
           {Object.entries(userTopAlbums).map(([albumId, { album, percentage }], index) => {
             return (
@@ -123,6 +124,7 @@ export default function TopAlbums() {
           })}
         </div>
       </div>
+    </div>
     </div>
   );
 }

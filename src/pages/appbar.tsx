@@ -60,10 +60,10 @@ function AppBar() {
                                 {!session && (
                                     <></>
                                 )}
-                                {userProfile && (
+                                {userProfile &&  (
                                     <>
                                         <a className="hidden-arrow flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none" href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
-                                            <img src={userProfile.images?.[0].url} className="rounded-full" style={{ height: "35px", width: "35px" }} alt="" loading="lazy" />
+                                            <img src={userProfile.images?.[0]?.url} className="rounded-full" style={{ height: "35px", width: "35px" }} alt="" loading="lazy" />
                                         </a>
                                     </>
                                 )}
