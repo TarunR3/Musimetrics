@@ -48,7 +48,7 @@ export default function Recent() {
                     return (
                         <div
                             key={trackResult.track.id}
-                            className="bg-gray-100 dark:bg-neutral-900 p-4 flex items-center justify-between rounded-lg">
+                            className="bg-gray-100 dark:bg-neutral-900 mx-2 p-4 flex items-center justify-between rounded-lg">
                             <div className="flex items-center">
                                 <h1 className="text-lg font-bold ml-4 mr-4 dark:text-white">{index + 1}.</h1>
                                 <img

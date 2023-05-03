@@ -65,7 +65,7 @@ export default function Home() {
       try {
         const response = await spotifyApi.getMyTopTracks({ time_range: "long_term", limit: 50 });
         const recent = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
-        const artist = await spotifyApi.getMyTopArtists({ time_range: "short_term", limit: 1 });
+        const artist = await spotifyApi.getMyTopArtists({ time_range: "long_term", limit: 1 });
         setuserTopArtist(artist.body.items[0])
         const topTracks = response.body.items;
         const recentTracks = recent.body.items;

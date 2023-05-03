@@ -87,7 +87,7 @@ export default function TopAlbums() {
           All Time
         </button>
       </div>
-      <div className = "py-4">
+      <div className = "py-4 mx-2">
       <div className="container mx-auto py-4 px-8 bg-neutral-800 rounded-lg">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
           {Object.entries(userTopAlbums).map(([albumId, { album, percentage }], index) => {

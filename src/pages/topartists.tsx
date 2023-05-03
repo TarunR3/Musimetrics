@@ -61,9 +61,9 @@ export default function TopArtists(): JSX.Element {
           All Time
         </button>
       </div>
-      <div className = "py-4">
+      <div className = "py-4 mx-2">
       <div className="container mx-auto my-4 py-4 px-8 bg-neutral-800 rounded-lg">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {userTopArtists.map((artistResult: Artist, index: number) => {
             return (
               <div

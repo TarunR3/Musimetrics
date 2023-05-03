@@ -92,6 +92,7 @@ export default function TopGenres() {
                     All Time
                 </button>
             </div>
+            <div className = "mx-2">
             <div className="container mx-auto py-1 dark:bg-neutral-900 rounded-xl mt-4">
                 {Object.entries(userTopGenres)
                     .slice(0, 50)
@@ -101,6 +102,7 @@ export default function TopGenres() {
                             <Bar value={percentage} />
                         </div>
                     ))}
+            </div>
             </div>
         </div>
     );
