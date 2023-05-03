@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
 import useSpotify from "../../hooks/useSpotify"
-import AppBar from "./appbar";
 
 interface Album {
   id: string
