@@ -80,7 +80,7 @@ export default function TopArtists() {
                                 <h1 className="text-lg font-bold ml-4 mr-4 dark:text-white">{index + 1}.</h1>
                                 <img
                                     className="mr-4"
-                                    src={trackResult.album.images[0].url}
+                                    src={trackResult.album?.images[0]?.url}
                                     alt={trackResult.name}
                                     width="64"
                                     height="64"

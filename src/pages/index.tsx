@@ -186,7 +186,7 @@ export default function Home() {
               <h2 className="text-white border-b-2 pb-1 mb-4 font-bold text-lg">The Songs Your Into Now</h2>
               {Object.entries(userTopRecent)
                 .slice(0, 5)
-                .map(([albumId, { recent, count }], index) => {
+                .map(([albumId, { recent }], index) => {
                   return (
                     <div
                       key={albumId}

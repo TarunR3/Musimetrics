@@ -97,7 +97,7 @@ export default function TopAlbums() {
                 className="bg-gray-100 dark:bg-neutral-900 p-4 flex flex-col items-center justify-center rounded-lg"
               >
                 <img
-                  src={album.images[0].url}
+                  src={album?.images[0]?.url}
                   alt={album.name}
                   className="w-full h-auto mb-4"
                 />
