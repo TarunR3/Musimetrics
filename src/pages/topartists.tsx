@@ -71,7 +71,7 @@ export default function TopArtists(): JSX.Element {
                 className="bg-gray-100 dark:bg-neutral-900 p-4 flex flex-col items-center justify-center rounded-lg"
               >
                 <img
-                  src={artistResult.images[0].url}
+                  src={artistResult?.images[0]?.url}
                   alt={artistResult.name}
                   className="w-full h-auto mb-4"
                 />

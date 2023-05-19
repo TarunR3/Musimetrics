@@ -7,6 +7,8 @@ interface Profile {
     images?: { url: string }[];
 }
 
+const CACHE_KEY = "userProfile";
+
 function AppBar() {
     const [userProfile, setUserProfile] = useState<Profile>();
     const { data: session, status } = useSession();
@@ -15,14 +17,24 @@ function AppBar() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
+        // Check if the cached userProfile exists
+        const cachedUserProfile = localStorage.getItem(CACHE_KEY);
+        if (cachedUserProfile) {
+            setUserProfile(JSON.parse(cachedUserProfile));
+        }
+
         if (userProfile) {
             return;
         }
+
         if (spotifyApi.getAccessToken()) {
             spotifyApi.getMe().then((response) => {
                 const data = response.body;
-                console.log("Hello")
-                setUserProfile(data)
+                console.log("Hello");
+                setUserProfile(data);
+
+                // Cache the userProfile
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
             });
         }
     }, [session, spotifyApi]);
@@ -60,7 +72,7 @@ function AppBar() {
                                 {!session && (
                                     <></>
                                 )}
-                                {userProfile &&  (
+                                {userProfile && (
                                     <>
                                         <a className="hidden-arrow flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none" href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
                                             <img src={userProfile.images?.[0]?.url} className="rounded-full" style={{ height: "35px", width: "35px" }} alt="" loading="lazy" />
