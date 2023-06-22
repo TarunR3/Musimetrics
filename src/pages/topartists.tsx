@@ -9,8 +9,12 @@ interface Artist {
   uri: string;
 }
 
+interface UserTopArtists {
+  [timeframe: string]: Artist[];
+}
+
 export default function TopArtists(): JSX.Element {
-  const [userTopArtists, setUserTopArtists] = useState<Artist[]>([])
+  const [userTopArtists, setUserTopArtists] = useState<UserTopArtists>({});
   const [timeframe, setTimeframe] = useState<"medium_term" | "long_term" | "short_term">("medium_term");
 
   const dictTimeframes: { [key: string]: string } = {
@@ -28,12 +32,17 @@ export default function TopArtists(): JSX.Element {
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
-      spotifyApi.getMyTopArtists({ time_range: timeframe, limit: 50 }).then((response) => {
-        const data = response.body;
-        setUserTopArtists(data.items);
-      });
+      if (!userTopArtists[timeframe]) {
+        spotifyApi.getMyTopArtists({ time_range: timeframe, limit: 50 }).then((response) => {
+          const data = response.body;
+            setUserTopArtists((prevUserTopArtists) => ({
+            ...prevUserTopArtists,
+            [timeframe]: data.items,
+          }));
+        });
+      }
     }
-  }, [session, spotifyApi, timeframe]);
+  }, [session, spotifyApi, timeframe, userTopArtists]);
 
   return (
     <div className="min-h-screen bg-neutral-950">
@@ -64,7 +73,7 @@ export default function TopArtists(): JSX.Element {
       <div className = "py-4 mx-2">
       <div className="container mx-auto my-4 py-4 px-8 bg-neutral-800 rounded-lg">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {userTopArtists.map((artistResult: Artist, index: number) => {
+          {userTopArtists[timeframe] && userTopArtists[timeframe].map((artistResult: Artist, index: number) => {
             return (
               <div
                 key={artistResult.id}

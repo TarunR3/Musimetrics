@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
 import useSpotify from "../../hooks/useSpotify"
@@ -35,36 +36,43 @@ export default function TopGenres() {
 
     useEffect(() => {
         async function fetchTopGenres() {
-            try {
-                const response = await spotifyApi.getMyTopArtists({ time_range: timeframe, limit: 50 });
-                const topArtists = response.body.items;
-                const genreCount: GenreCount = {};
-                const l = topArtists.length;
-                for (const artist of topArtists) {
-                    for (const genre of artist.genres) {
-                        if (genre in genreCount) {
-                            genreCount[genre] += 1;
-                        } else {
-                            genreCount[genre] = 1;
-                        }
-                    }
+          try {
+            if (!userTopGenres[timeframe]) {
+                console.log("api")
+              const response = await spotifyApi.getMyTopArtists({ time_range: timeframe, limit: 50 });
+              const topArtists = response.body.items;
+              const genreCount: GenreCount = {};
+              const totalArtists = topArtists.length;
+              for (const artist of topArtists) {
+                for (const genre of artist.genres) {
+                  if (genre in genreCount) {
+                    genreCount[genre] += 1;
+                  } else {
+                    genreCount[genre] = 1;
+                  }
                 }
-                const genrePercentage: GenrePercentage = {};
-                for (const [genre, count] of Object.entries(genreCount)) {
-                    genrePercentage[genre] = (count / topArtists.length);
-                }
-                const sortedGenrePercentage = Object.fromEntries(
-                    Object.entries(genrePercentage).sort((a, b) => b[1] - a[1])
-                );
-                setUserTopGenres(sortedGenrePercentage);
-            } catch (error) {
-                console.log("Error fetching top genres:", error);
+              }
+              const genrePercentage: GenrePercentage = {};
+              for (const [genre, count] of Object.entries(genreCount)) {
+                genrePercentage[genre] = count / totalArtists;
+              }
+              const sortedGenrePercentage = Object.fromEntries(
+                Object.entries(genrePercentage).sort((a, b) => b[1] - a[1])
+              );
+              setUserTopGenres((prevUserTopGenres: GenrePercentage) => ({
+                ...prevUserTopGenres,
+                [timeframe]: sortedGenrePercentage,
+              }));
             }
+          } catch (error) {
+            console.log("Error fetching top genres:", error);
+          }
         }
+    
         if (spotifyApi.getAccessToken()) {
-            fetchTopGenres();
+          fetchTopGenres();
         }
-    }, [session, spotifyApi, timeframe]);
+      }, [session, spotifyApi, timeframe, userTopGenres]);
 
     return (
         <div className="min-h-screen bg-neutral-950">
@@ -94,7 +102,7 @@ export default function TopGenres() {
             </div>
             <div className = "mx-2">
             <div className="container mx-auto py-1 dark:bg-neutral-900 rounded-xl mt-4">
-                {Object.entries(userTopGenres)
+                {userTopGenres[timeframe] && Object.entries(userTopGenres[timeframe])
                     .slice(0, 50)
                     .map(([genre, percentage], index) => (
                         <div key={genre} className="flex flex-col items-start w-full px-4 py-2">

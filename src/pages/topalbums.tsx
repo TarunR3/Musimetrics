@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
 import useSpotify from "../../hooks/useSpotify"
@@ -33,33 +34,41 @@ export default function TopAlbums() {
   useEffect(() => {
     async function fetchTopAlbums() {
       try {
-        const response = await spotifyApi.getMyTopTracks({ time_range: timeframe, limit: 50 });
-        const topTracks = response.body.items;
-        const albumCount: AlbumCount = {};
-        for (const track of topTracks) {
-          const albumId = track.album.id;
-          if (albumId in albumCount) {
-            albumCount[albumId].count += 1;
-          } else {
-            albumCount[albumId] = { album: track.album, count: 1 };
+        if (!userTopAlbums[timeframe]) {
+          console.log("api")
+          const response = await spotifyApi.getMyTopTracks({ time_range: timeframe, limit: 50 });
+          const topTracks = response.body.items;
+          const albumCount: AlbumCount = {};
+          for (const track of topTracks) {
+            const albumId = track.album.id;
+            if (albumId in albumCount) {
+              albumCount[albumId].count += 1;
+            } else {
+              albumCount[albumId] = { album: track.album, count: 1 };
+            }
           }
+          const albumPercentage: AlbumPercentage = {};
+          for (const [albumId, { album, count }] of Object.entries(albumCount)) {
+            albumPercentage[albumId] = { album, percentage: (count / topTracks.length) * 100 };
+          }
+          const sortedAlbumPercentage = Object.fromEntries(
+            Object.entries(albumPercentage).sort((a, b) => b[1].percentage - a[1].percentage)
+          );
+          setUserTopAlbums((prevUserTopAlbums: AlbumPercentage) => ({
+            ...prevUserTopAlbums,
+            [timeframe]: sortedAlbumPercentage,
+          }));
         }
-        const albumPercentage: AlbumPercentage = {};
-        for (const [albumId, { album, count }] of Object.entries(albumCount)) {
-          albumPercentage[albumId] = { album, percentage: (count / topTracks.length) * 100 };
-        }
-        const sortedAlbumPercentage = Object.fromEntries(
-          Object.entries(albumPercentage).sort((a, b) => b[1].percentage - a[1].percentage)
-        );
-        setUserTopAlbums(sortedAlbumPercentage);
       } catch (error) {
         console.log("Error fetching top albums:", error);
       }
     }
+    
     if (spotifyApi.getAccessToken()) {
       fetchTopAlbums();
     }
-  }, [session, spotifyApi, timeframe]);
+  }, [session, spotifyApi, timeframe, userTopAlbums]);
+
 
   return (
     <div className="min-h-screen bg-neutral-950 mb-[-4]">
@@ -90,7 +99,7 @@ export default function TopAlbums() {
       <div className = "py-4 mx-2">
       <div className="container mx-auto py-4 px-8 bg-neutral-800 rounded-lg">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
-          {Object.entries(userTopAlbums).map(([albumId, { album, percentage }], index) => {
+          {userTopAlbums[timeframe] && Object.entries(userTopAlbums[timeframe]).map(([albumId, { album, percentage }], index) => {
             return (
               <div
                 key={albumId}

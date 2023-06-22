@@ -18,8 +18,12 @@ interface Track {
     uri: string;
 }
 
+interface UserTopTracks {
+    [timeframe: string]: Track[];
+  }
+
 export default function TopArtists() {
-    const [userTopTracks, setUserTopTracks] = useState<Track[]>([])
+    const [userTopTracks, setUserTopTracks] = useState<UserTopTracks>({});
     const [timeframe, setTimeframe] = useState<"medium_term" | "long_term" | "short_term">("medium_term");
 
     const dictTimeframes: { [key: string]: string } = {
@@ -37,12 +41,17 @@ export default function TopArtists() {
 
     useEffect(() => {
         if (spotifyApi.getAccessToken()) {
+          if (!userTopTracks[timeframe]) {
             spotifyApi.getMyTopTracks({ time_range: timeframe, limit: 50 }).then((response) => {
-                const data = response.body;
-                setUserTopTracks(data.items);
+              const data = response.body;
+              setUserTopTracks((prevUserTopTracks) => ({
+                ...prevUserTopTracks,
+                [timeframe]: data.items,
+              }));
             });
+          }
         }
-    }, [session, spotifyApi, timeframe]);
+      }, [session, spotifyApi, timeframe, userTopTracks]);
 
     return (
         <div className="min-h-screen bg-neutral-950">
@@ -71,7 +80,7 @@ export default function TopArtists() {
                 </button>
             </div>
             <div className="container mx-auto py-4">
-                {userTopTracks && userTopTracks.map((trackResult: Track, index: number) => {
+                {userTopTracks[timeframe] && userTopTracks[timeframe].map((trackResult: Track, index: number) => {
                     return (
                         <div
                             key={trackResult.id}
